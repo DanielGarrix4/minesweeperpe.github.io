@@ -10,6 +10,7 @@ let isGameOver = false;
 let timerInterval;
 let seconds = 0;
 let translations = {};
+let currentLang = 'es';
 
 const boardElem = document.getElementById('board');
 const flagModeInput = document.getElementById('flag-mode');
@@ -158,6 +159,7 @@ async function loadLanguage(lang) {
     try {
         const response = await fetch(`./languages/${lang}.json`);
         translations = await response.json();
+        currentLang = lang;
         applyTranslations();
     } catch (error) {
         console.error("Error loading language file:", error);
@@ -177,6 +179,11 @@ function applyTranslations() {
 // Inicialización
 document.getElementById('reset-btn').addEventListener('click', initGame);
 
+document.getElementById('lang-btn')?.addEventListener('click', () => {
+    const nextLang = currentLang === 'es' ? 'en' : 'es';
+    loadLanguage(nextLang);
+});
+
 // Detectar idioma del navegador (por defecto español si no es inglés)
-const userLang = navigator.language.startsWith('en') ? 'en' : 'es';
-loadLanguage(userLang).then(() => initGame());
+const initialLang = navigator.language.startsWith('en') ? 'en' : 'es';
+loadLanguage(initialLang).then(() => initGame());

@@ -8,5 +8,6 @@
   "time": "Time",
   "game_over": "Game Over!",
   "victory": "You Win!",
-  "restart": "Restart"
+  "restart": "Restart",
+  "switch_lang": "Español"
 }
