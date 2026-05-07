@@ -9,6 +9,7 @@ let firstClick = true;
 let isGameOver = false;
 let timerInterval;
 let seconds = 0;
+let translations = {};
 
 const boardElem = document.getElementById('board');
 const flagModeInput = document.getElementById('flag-mode');
@@ -148,8 +149,34 @@ function endGame(won) {
     isGameOver = true;
     clearInterval(timerInterval);
     board.flat().forEach(c => { if(c.isMine) { c.elem.classList.add('mine'); c.elem.textContent = '💣'; } });
-    setTimeout(() => alert(won ? "🎉 ¡Felicidades! Ganaste." : "💥 ¡BOOM! Juego terminado."), 100);
+    
+    const message = won ? translations.victory : translations.game_over;
+    setTimeout(() => alert(message), 100);
 }
 
+async function loadLanguage(lang) {
+    try {
+        const response = await fetch(`./languages/${lang}.json`);
+        translations = await response.json();
+        applyTranslations();
+    } catch (error) {
+        console.error("Error loading language file:", error);
+    }
+}
+
+function applyTranslations() {
+    // Actualiza todos los elementos que tengan el atributo data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key]) {
+            el.textContent = translations[key];
+        }
+    });
+}
+
+// Inicialización
 document.getElementById('reset-btn').addEventListener('click', initGame);
-initGame();
+
+// Detectar idioma del navegador (por defecto español si no es inglés)
+const userLang = navigator.language.startsWith('en') ? 'en' : 'es';
+loadLanguage(userLang).then(() => initGame());
