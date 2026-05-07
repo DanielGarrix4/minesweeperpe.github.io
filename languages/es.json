@@ -1,0 +1,12 @@
+{
+  "title": "Buscaminas PE",
+  "difficulty": "Dificultad",
+  "easy": "Fácil",
+  "medium": "Intermedio",
+  "hard": "Difícil",
+  "flags": "Banderas",
+  "time": "Tiempo",
+  "game_over": "¡Juego terminado!",
+  "victory": "¡Has ganado!",
+  "restart": "Reiniciar"
+}
